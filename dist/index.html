@@ -16,6 +16,10 @@
       .brand { display: inline-flex; align-items: center; gap: 10px; font-size: 23px; font-weight: 750; letter-spacing: -.07em; text-decoration: none; }
       .mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px; background: #83a8ff; color: #0b1423; font-size: 24px; font-weight: 800; }
       .header-note { color: #99a8bc; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+      .header-links { display: flex; align-items: center; gap: 26px; }
+      .header-links a { color: #e7edf7; font-size: 14px; font-weight: 650; text-decoration: none; }
+      .header-links a:hover { color: #83a8ff; }
+      .header-links a:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
       main { min-height: calc(100vh - 154px); display: grid; grid-template-columns: 1fr 1.05fr; align-items: center; gap: 7%; padding: 45px 0 85px; }
       .eyebrow { display: inline-flex; align-items: center; gap: 9px; border: 1px solid #293345; border-radius: 999px; padding: 9px 13px; color: #99a8bc; font-size: 13px; font-weight: 600; }
       .dot { width: 7px; height: 7px; border-radius: 50%; background: #83a8ff; box-shadow: 0 0 14px #83a8ff; }
@@ -57,7 +61,7 @@
     <div class="shell">
       <header>
         <a class="brand" href="/" aria-label="Elina home"><span class="mark" aria-hidden="true">e</span>elina</a>
-        <span class="header-note">Observe the whole story</span>
+        <nav class="header-links" aria-label="Main navigation"><a href="/docs">Docs</a><span class="header-note">Observe the whole story</span></nav>
       </header>
       <main>
         <section aria-labelledby="hero-title">

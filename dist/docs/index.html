@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b0f17" />
+    <meta name="description" content="Get started with the self-hosted Elina server and Python tracing SDK." />
+    <title>Docs — Elina</title>
+    <style>
+      :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { margin: 0; color: #e7edf7; background: radial-gradient(circle at 82% 0, #18253b 0, transparent 32%), #0b0f17; }
+      a { color: #a9c2ff; }
+      a:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+      .shell { width: min(1100px, calc(100% - 48px)); margin: auto; }
+      header { display: flex; align-items: center; justify-content: space-between; padding: 26px 0; border-bottom: 1px solid #293345; }
+      .brand { display: inline-flex; align-items: center; gap: 10px; color: #e7edf7; font-size: 23px; font-weight: 750; letter-spacing: -.07em; text-decoration: none; }
+      .mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px; background: #83a8ff; color: #0b1423; font-size: 24px; font-weight: 800; }
+      header nav { display: flex; gap: 24px; }
+      header nav a { color: #e7edf7; font-size: 14px; font-weight: 650; text-decoration: none; }
+      header nav a[aria-current] { color: #83a8ff; }
+      .intro { padding: 72px 0 54px; border-bottom: 1px solid #293345; }
+      .eyebrow { color: #83a8ff; font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+      h1 { margin: 14px 0 18px; font-size: clamp(3rem, 6vw, 5rem); line-height: 1; letter-spacing: -.07em; }
+      .intro p { max-width: 650px; margin: 0; color: #aab8ca; font-size: 19px; line-height: 1.65; }
+      .layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 70px; padding: 55px 0 110px; }
+      aside { align-self: start; position: sticky; top: 30px; }
+      aside strong { display: block; margin-bottom: 16px; color: #99a8bc; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+      aside a { display: block; margin: 12px 0; color: #aab8ca; font-size: 14px; text-decoration: none; }
+      aside a:hover, header nav a:hover { color: #83a8ff; }
+      article section { scroll-margin-top: 30px; margin-bottom: 66px; }
+      h2 { margin: 0 0 18px; font-size: 30px; letter-spacing: -.045em; }
+      h3 { margin: 34px 0 13px; font-size: 20px; letter-spacing: -.025em; }
+      p, li { color: #b7c4d6; line-height: 1.7; }
+      p { margin: 0 0 16px; }
+      ol { padding-left: 23px; }
+      li { padding-left: 5px; margin: 10px 0; }
+      code { color: #d8e4ff; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .93em; }
+      pre { overflow-x: auto; margin: 18px 0 28px; padding: 20px 22px; border: 1px solid #2a3952; border-radius: 12px; background: #131d2b; line-height: 1.55; }
+      pre code { font-size: 13px; }
+      .note { padding: 17px 20px; border-left: 3px solid #83a8ff; border-radius: 0 8px 8px 0; background: #162132; }
+      footer { padding: 24px 0 35px; border-top: 1px solid #293345; color: #99a8bc; font-size: 13px; }
+      @media (max-width: 720px) { .shell { width: min(100% - 36px, 1100px); } .intro { padding: 54px 0 40px; } .layout { display: block; padding-top: 35px; } aside { position: static; display: flex; flex-wrap: wrap; gap: 0 20px; margin-bottom: 46px; } aside strong { width: 100%; } aside a { margin: 0 0 10px; } }
+      @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <a class="brand" href="/" aria-label="Elina home"><span class="mark" aria-hidden="true">e</span>elina</a>
+        <nav aria-label="Main navigation"><a href="/">Home</a><a href="/docs" aria-current="page">Docs</a></nav>
+      </header>
+      <div class="intro">
+        <span class="eyebrow">Documentation</span>
+        <h1>Start tracing with Elina.</h1>
+        <p>Run the server on your own machine, create a project, and send your first Python trace.</p>
+      </div>
+      <div class="layout">
+        <aside aria-label="On this page">
+          <strong>On this page</strong>
+          <a href="#server">Run the server</a>
+          <a href="#project">Create a project</a>
+          <a href="#python">Send a Python trace</a>
+          <a href="#production">Production setup</a>
+          <a href="#reference">More detail</a>
+        </aside>
+        <article>
+          <section id="server">
+            <h2>1. Run the server</h2>
+            <p>Install Docker with Compose, then clone the <a href="https://github.com/iamrobins/elina">Elina repository</a> and copy its environment template.</p>
+            <pre><code>git clone https://github.com/iamrobins/elina.git
+cd elina
+cp .env.example .env</code></pre>
+            <p>Edit <code>.env</code>: choose separate random hex values of at least 32 characters for <code>POSTGRES_PASSWORD</code> and <code>ADMIN_TOKEN</code>, and 64 random hex characters for <code>SESSION_SECRET</code>. Generate <code>DASHBOARD_PASSWORD_HASH</code> by replacing the sample password below, then paste the output into <code>.env</code>.</p>
+            <pre><code>docker run --rm ghcr.io/iamrobins/elina:latest node -e "const c=require('node:crypto'); const s=c.randomBytes(16); console.log('scrypt:'+s.toString('hex')+':'+c.scryptSync('your-dashboard-password',s,64).toString('hex'))"</code></pre>
+            <p>Start the API, dashboard, and database:</p>
+            <pre><code>docker compose up -d --build</code></pre>
+            <p>The dashboard is at <a href="http://127.0.0.1:3001">http://127.0.0.1:3001</a>; the local API is at <code>http://127.0.0.1:3000</code>. If startup takes a moment, run <code>docker compose ps</code>.</p>
+          </section>
+          <section id="project">
+            <h2>2. Create a project</h2>
+            <p>Sign in to the dashboard with the password you chose. Create a project and copy its ingestion key when it appears. Elina shows the key only once.</p>
+            <p class="note">Keep the ingestion key in server-side code or an environment variable. It allows an application to write traces to that project.</p>
+          </section>
+          <section id="python">
+            <h2>3. Send a Python trace</h2>
+            <p>Install the <a href="https://github.com/iamrobins/elina-python">Elina Python SDK</a> (Python 3.11 or newer) and set <code>ELINA_WRITE_KEY</code> to your project's ingestion key.</p>
+            <pre><code>python -m pip install elinaobs
+export ELINA_WRITE_KEY=your-project-ingestion-key</code></pre>
+            <p>In PowerShell, set the key with <code>$env:ELINA_WRITE_KEY="your-project-ingestion-key"</code> instead. Then run a script like this:</p>
+            <pre><code>import os
+from elinaobs import init, trace, flush
+
+init(
+    api_key=os.environ["ELINA_WRITE_KEY"],
+    endpoint="http://127.0.0.1:3000/v1/traces",
+    service_name="my-agent",
+)
+
+@trace(name="Answer", as_type="agent")
+def answer(question: str) -&gt; str:
+    return f"You asked: {question}"
+
+answer("Hello")
+flush()</code></pre>
+            <p>Open the project's <strong>Traces</strong> page to see the result. The <a href="https://github.com/iamrobins/elina-python/blob/main/examples/agent.py">included demo</a> shows child spans and prints the trace ID.</p>
+          </section>
+          <section id="production">
+            <h2>Deploy on your own domain</h2>
+            <p>The production Compose file adds HTTPS and daily local database backups. Set <code>ELINA_DOMAIN</code>, <code>ACME_EMAIL</code>, and an absolute <code>BACKUP_DIR</code> in <code>.env</code>; point your domain at the host and open ports 80 and 443. Read the <a href="https://github.com/iamrobins/elina">deployment and restore instructions</a> before starting a production installation.</p>
+            <p>Use <code>https://&lt;your-domain&gt;/v1/traces</code> as the SDK endpoint. Copy database backups off the host and verify a fresh archive before upgrades.</p>
+          </section>
+          <section id="reference">
+            <h2>More detail</h2>
+            <p>Read the <a href="https://github.com/iamrobins/elina">server repository</a> for API routes, deployment, and backup details. The <a href="https://github.com/iamrobins/elina-python">SDK repository</a> covers feedback, configuration, limitations, and development checks.</p>
+          </section>
+        </article>
+      </div>
+      <footer>Elina · Your app. Your infrastructure. Your data.</footer>
+    </div>
+  </body>
+</html>
